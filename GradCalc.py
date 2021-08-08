@@ -2,9 +2,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
 
-Tau=int(input())
-Phi=int(input())
-CurrentStudents=int(input())
+Tau, Phi, CurrentStudents=int(input("Tau: )), int(input("Phi: )), int(input("Current Students: "))
 
 #Grad Calc Function
 def GradCalc(Tau, Phi, CurrentStudents):
