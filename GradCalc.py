@@ -1,5 +1,3 @@
-import os
-import json
 import sys
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -26,14 +24,6 @@ while type(CurrentStudents)==str:
   else: 
     print("Please input an integer for CurrentStudents.")
     CurrentStudents="Fail"
-
-#Encryption Key BS
-private_key=os.environ.get('private_key')
-Input= {"type": os.environ.get('type'),"project_id": os.environ.get('project_id'),"private_key_id":  os.environ.get('private_key_id'),"private_key":  private_key.replace('\\n','\n'),"client_email":  os.environ.get('client_email'),"client_id":  os.environ.get('client_id'),"auth_uri":  os.environ.get('auth_uri'),"token_uri":  os.environ.get('token_uri'),"auth_provider_x509_cert_url":  os.environ.get('auth_provider_x509_cert_url'),"client_x509_cert_url":  os.environ.get('client_x509_cert_url')}
-with open("Encryption_Key.json", 'w') as fp:
-    json.dump(Input, fp)
-with open("Encryption_Key.json", "r") as fp:
-    Encryption_Key = json.load(fp)
 
 #Grad Calc Function
 def GradCalc(Tau, Phi, CurrentStudents):
@@ -161,7 +151,3 @@ def GradCalc(Tau, Phi, CurrentStudents):
   return(FinalOutput) #Final Output
 print("\n")
 print(GradCalc(Tau, Phi, CurrentStudents))
-
-Reset = {'type': '', 'project_id': '', 'private_key_id': '', 'private_key': '', 'client_email': '', 'client_id': '', 'auth_uri': '', 'token_uri': '', 'auth_provider_x509_cert_url': '', 'client_x509_cert_url': ''}
-with open("Encryption_Key.json", 'w') as fp:
-    json.dump(Reset, fp)
