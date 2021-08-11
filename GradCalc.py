@@ -21,7 +21,7 @@ while type(Phi)==str:
     print("Please input an integer for Phi.")
     Phi="Fail"
 while type(CurrentStudents)==str:
-  CurrentStudents=input("Current Students (only number after e):  ")
+  CurrentStudents=input("Current Students:  ")
   if(CurrentStudents.isdigit()): CurrentStudents=int(CurrentStudents)
   else: 
     print("Please input an integer for CurrentStudents.")
