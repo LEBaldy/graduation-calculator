@@ -14,6 +14,17 @@ The calculator and linked google sheets was made by [LE⭐Baldy](https://github.
 
 This code will not work locally without the nessasary .json file. Normally the .json would have attached security risks, but due to how it is setup, these are non-existent. The code will be hosted shortly on the [Exponential Idle Discord](https://discord.gg/S9UheTC) for use. If you want usage without going through the bot you can use the [Web Version](https://replit.com/@LEBaldy2002/gradcalc).
 
+You will need to install these locally to run as well:
+```
+pip3 install gspread
+pip3 install --upgrade google-api-python-client oauth2client 
+
+or
+
+pip install gspread
+pip install --upgrade google-api-python-client oauth2client
+```
+
 ###   License
 
 These are the licenses for this calculator:
