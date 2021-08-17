@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ex-idle-graduation-calculator",
+  "private_key_id": "3c2c328fe32c5995a7031bee27b94ba274c391fc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDvSdoHiYGiv5ts\nqwn115kY4YP8WGyuuHZ2iTFLJoHvc5Ts7+O4+z8rhZ2gL8MX+LSmjd0zO1v6V2vM\nzF+Y8j6vrnu4Hr4masSrCql97C28vwU9hX1WbUUC1dRypDQk+rTs3DBe/YeFHaWp\nUXSHwk2T6IFCPPI5BTYwkNuyAFlIRQJkO+JnPbZ940aWyZ/gfj5s4NoM6ZiXrx1r\nopcpwGe+iJpm0sXyX1UGn0vPGK9ejHO8Y666zWItKvPFpndaNFvlJAzZ2Pl5gfwK\nqFsvdjlIz3pVGd6VEN9CVXtXee7X3vKnPDL9JPbaICxpwNuVIwMaJzwXEAPbsQ3i\ndyRcJhqZAgMBAAECggEAAkiyoe/eMBuzK9/8j/oIjNrJ3UNfTdzLywEaJTkHKbjR\nKbX29vBVUlDRIrhTUi6LqTYmr7s1RdVmiCLbFpJuW9PW/A3gEQK5IUGlwUJ7ORyw\n0T04UhY9f8PN0QZ6oG/mVkdE7MKE/qsRe8VKealr6eQ2MqKICdhgGRR9jQGw7c4v\nwt2g6m1uW/p7d8ag3hPEIDlqIZqowjPJUNX1cmSaq/rzhxNyp3X11QhTPoQPehQ+\nd/Kh8FeflO/FmLZmiUaU3Ncxcl2yf/4T0MsFdOjkVnK6GyEeVJQloz5JV02oAvFZ\nTYx+UX9iSjlAdB2cOX+YjhXKl5IdvrREbMuRyRBFEQKBgQD805PcyNmnYa/bnvTC\nwAgx9XrOUhgdlW3eGj9ITLXHbxhfenfpfkArLND9xNQKa1ADTImTsKaLQFzISEZE\n3HCd70ZvxvYYVdiieUb10FJVFod9GbptvPxqgGUt+ROlXOFaY65Sl5IEg98B6UUF\nEU800nEIABOzdl7YXgUMPxVQ6QKBgQDySsWK/iG2To08LKLKuptPKQdUnnHF9Rbm\nbXZb1RdsN2EEQsRRcyvQwfRAXIELi5+pZaFv/ENY53FXx6et5FFRghg5AZIgGjv4\n624VK7SYQvcxNrYHmrgrAHtgg+6OZdFy/wmtLTPzxsNNPVvCsLaS82KCLPcr7VbL\nWAK/GXHuMQKBgQC0JWnBMpfrrS5qFawfLEdqmZhkdJhcVAIR9K/Mq2QG88DxH0lb\n5SqB2RAdEedoeShtAVcyFffFVxoFV4JCRLQ1xK1yrdjiZCDVPAb01fgkSsZFvFRb\nJwLQPCZcCJMYC8NC7a3jib5wWypGqVkVkEzYvW3unmdrQ1e3Yd7E6BofKQKBgQCm\nuJzFz6kS8WpuBajfJxjHl8vbhktzk/p2BMx01GSRqmmvrOG5yi5UL6IKx5xkfWcY\nAT7c+BC/lEKBzHitR3ZNR9+zGkmanXK3Dglpt/FE9I9z5dnL0cL4lBRRjXcRtS4y\nmxvldj1ReWvaMmZ5yW9YHvGh8Z8DMwWOVrlNFg03gQKBgGYFb9RHLf5cR0FbCNtE\nXolzSblFen+/tONLazzg+h0vm/30ZmVzcWMc7tUcGUQg15ZfU6KdZGCmjvo72nLP\noDSFp0WZll27KznvQUBTQzc+2NXcRPqjc/1tSESkfOz7aOCqse8j9M5nVv066hXQ\nifOi8xZvXJ/R8FGv1YfoPnNp\n-----END PRIVATE KEY-----\n",
+  "client_email": "lebaldy2002@ex-idle-graduation-calculator.iam.gserviceaccount.com",
+  "client_id": "104940947615519926551",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lebaldy2002%40ex-idle-graduation-calculator.iam.gserviceaccount.com"
+}
