@@ -140,7 +140,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
   #The Actual Output Sorter
   if(Var[0]<0 or Var[1]<0 or Var[2]<5): FinalOutput=str("Please Input Valid Values for Phi, Tau, and Total Students")  #Valid Input No Calculation Check 
   elif(Var[3]>UpperLimits[0] or Var[2]>UpperLimits[1]): FinalOutput=str("Values too high and outside range of equations.\nIf you have data to add please fill out https://forms.gle/myog2rNgdmQJqPsP6\nCurrent Max Supported Phi*Tau: e")+str( UpperLimits[0])+str("\nCurrent Max Supported Students: ")+str( UpperLimits[1]) #Out of Range Check
-  elif(GradSection==str): FinalOutput=GradSection #Grad Section Error Print off
+  elif(Type(GradSection)==str): FinalOutput=GradSection #Grad Section Error Print off
   else: #Outputs F(t) and/or R9 Boost Based On Section
       Ft=FtCalc(GradSection)
       if(Ft[1]==False): FinalOutput=str(Ft[0]) #Phi*Tau low check
