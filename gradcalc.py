@@ -34,7 +34,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
   Equations_of_Doom, Other_Data = sheet.get_worksheet(7), sheet.get_worksheet(8)
   
   #Additional Variable Setup
-  Var, FinalOutput=[Tau, Phi, CurrentStudents, Phi+Tau, CurrentStudents*200+1000], str("Please Have Something Other Than This Output.")
+  Var, FinalOutput, sigma_skips=[Tau, Phi, CurrentStudents, Phi+Tau, CurrentStudents*200+1000], str("Please Have Something Other Than This Output."), [166, 190, 216, 220, 240, 246, 251, 256, 272, 289, 298, 307, 310, 316, 324, 326, 334]
   
   #Equation Calculations
   def GradSection():
@@ -116,7 +116,11 @@ def GradCalc(Tau, Phi, CurrentStudents):
       elif(46900>GradFt>45600 and 230>Var[2]): FtOutput=46800 #550
       elif(48500>GradFt>47300 and 238>Var[2]): FtOutput=48400 #570
       else: FtOutput=GradFt
-  
+    
+      if((FtOutput/200-5)==(Var[2]+1)):
+          for i in length(sigma_skips):
+              if(sigma_skips[i]==(FtOutput/200-5)):
+                  FtOutput+=200
       if(FtOutput==str): return(FtOutput, False)
       else: R9=R9Boost(FtOutput/200-5) #R9 Boost Calculation
       
