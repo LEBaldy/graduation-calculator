@@ -1,4 +1,5 @@
 import sys
+import math
 from pathlib import Path
 sys.path.insert(0,str(Path().resolve())+'/packages')
 from packages.gspread import authorize
@@ -73,9 +74,6 @@ def GradCalc(Tau, Phi, CurrentStudents):
         
         return Section  #Outputting F(t) Section
 
-      def R9Seaper(GradMark):
-
-
       def R9Boost(GradMark):
         R9BoostMulti = [0, 0, 0]
         #1R9 start
@@ -97,7 +95,8 @@ def GradCalc(Tau, Phi, CurrentStudents):
           if(TauPerc[2]>(Var[1]/Var[3])):Tauness="Low"
           elif((Var[1]/Var[3])>TauPerc[1]):Tauness="High"
           else:Tauness=True
-        except Exception as err:Tauness=True
+        except Exception as err:
+          Tauness=True
         #Phi*Tau low check
         if ((GradFt - 1000) / 200 <= Var[0] and Var[0] >= 20):return ("Phi*Tau too low for next graduation.", False)
         elif ((GradFt - 1000) / 200 <= Var[0] and Var[0] < 20):return ("Phi too low for next graduation.\nPlease use !sigma or the superior !simga.",False)
@@ -148,10 +147,10 @@ def GradCalc(Tau, Phi, CurrentStudents):
         if (type(FtOutput) == str): return (FtOutput, False)
         else: R9 = R9Boost(FtOutput / 200 - 5)  #R9 Boost Calculation
 
-        return (FtOutput, R9[0], R9[1], R9[2), Tauness)  #Outputting the F(t) for grad and R9 Boost
+        return (FtOutput, R9[0], R9[1], R9[2], Tauness, TauPerc)  #Outputting the F(t) for grad and R9 Boost
 
       def FtCalc(Section):
-        Calc, TauPerc, attempts = False, 0
+        Calc, TauPerc, attempts = False, False, 0
         if(Var[0]>=65):
           for i in range(3):
             Equations_of_Doom.update_cell(Section, 4 + i,Var[i])  
@@ -205,8 +204,8 @@ def GradCalc(Tau, Phi, CurrentStudents):
             elif(2000>Ft[0] or Ft[0]>60000):apple = bounds
             elif (Ft[1] == 0 and Ft[2] == 0 and Ft[3] == 0):FinalOutput = str("Current Graduatin Mark: ee") + str(Ft[0])  #2k5k Check
             elif(Ft[4]==True):FinalOutput = str("Current Graduation Mark: ee") + str(Ft[0]) + str("\nTheory Income Boosted by ") + str(Ft[1]) + str("x since last Graduation.\nTheory Income Before Graduation: ") + str(Ft[2]) + str("\nTheory Income After Graduation: ") + str(Ft[3])  #5k+ Output w/ R9 Seap Check
-            elif(Ft[4]="High"):FinalOutput = str("Tau is high compared to Phi. Try to R9 seap better or begin R9 seaping. For more information, check out how to R9 seap:\nhttps://exponential-idle-guides.netlify.app/guides/endgame/#push-ft-with-3r9-seapping\n\nCurrent Graduation Mark: ee") + str(Ft[0]) + str("\nTheory Income Boosted by ") + str(Ft[1]) + str("x since last Graduation.\nTheory Income Before Graduation: ") + str(Ft[2]) + str("\nTheory Income After Graduation: ") + str(Ft[3])
-            elif(Ft[4]="Low"):FinalOutput = str("Tau is low compared to Phi. Try pushing theories more efficiently by using the theory simulator and corresponding guide:\nhttps://exponential-idle-guides.netlify.app/guides/theory-sim/\nAlso check out how to R9 seap:\nhttps://exponential-idle-guides.netlify.app/guides/endgame/#push-ft-with-3r9-seapping\n\nCurrent Graduation Mark: ee") + str(Ft[0]) + str("\nTheory Income Boosted by ") + str(Ft[1]) + str("x since last Graduation.\nTheory Income Before Graduation: ") + str(Ft[2]) + str("\nTheory Income After Graduation: ") + str(Ft[3])
+            elif(Ft[4]=="High"):FinalOutput = str("Tau is high compared to Phi. Try to R9 seap better or begin R9 seaping.\nFor more information, check out how to R9 seap:\nhttps://exponential-idle-guides.netlify.app/guides/endgame/#push-ft-with-3r9-seapping\nTau Range for Phi*Tau input: ")+str(round(10**(Ft[5][2]*Var[3]-math.floor(Ft[5][2]*Var[3])),2))+str("e")+str(math.floor(Ft[5][2]*Var[3]))+str(" - ")+str(round(10**(Ft[5][1]*Var[3]-math.floor(Ft[5][1]*Var[3])),2))+str("e")+str(math.floor(Ft[5][1]*Var[3]))+str("\n\nCurrent Graduation Mark: ee") + str(Ft[0]) + str("\nTheory Income Boosted by ") + str(Ft[1]) + str("x since last Graduation.\nTheory Income Before Graduation: ") + str(Ft[2]) + str("\nTheory Income After Graduation: ") + str(Ft[3])
+            elif(Ft[4]=="Low"):FinalOutput = str("Tau is low compared to Phi. Try pushing theories more efficiently by using the theory simulator and corresponding guide:\nhttps://exponential-idle-guides.netlify.app/guides/theory-sim/\nAlso check out how to R9 seap:\nhttps://exponential-idle-guides.netlify.app/guides/endgame/#push-ft-with-3r9-seapping\nTau Range for Phi*Tau input: ")+str(round(10**(Ft[5][2]*Var[3]-math.floor(Ft[5][2]*Var[3])),2))+str("e")+str(math.floor(Ft[5][2]*Var[3]))+str(" - ")+str(round(10**(Ft[5][1]*Var[3]-math.floor(Ft[5][1]*Var[3])),2))+str("e")+str(math.floor(Ft[5][1]*Var[3]))+str("\n\nCurrent Graduation Mark: ee") + str(Ft[0]) + str("\nTheory Income Boosted by ") + str(Ft[1]) + str("x since last Graduation.\nTheory Income Before Graduation: ") + str(Ft[2]) + str("\nTheory Income After Graduation: ") + str(Ft[3])
             else:orange=R9seaper
         else:FinalOutput = error_message
 
