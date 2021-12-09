@@ -90,13 +90,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
 
         return R9BoostMulti  #Returning Boost Difference
 
-      def FunnelSorter(GradFt, Section, TauPerc):
-        try:
-          if(TauPerc[2]>(Var[1]/Var[3])):Tauness="Low"
-          elif((Var[1]/Var[3])>TauPerc[1]):Tauness="High"
-          else:Tauness=True
-        except Exception as err:
-          Tauness=True
+      def FunnelSorter(GradFt, Section, Tauness, TauPerc):
         #Phi*Tau low check
         if ((GradFt - 1000) / 200 <= Var[0] and Var[0] >= 20):return ("Phi*Tau too low for next graduation.", False)
         elif ((GradFt - 1000) / 200 <= Var[0] and Var[0] < 20):return ("Phi too low for next graduation.\nPlease use !sigma or the superior !simga.",False)
@@ -170,7 +164,13 @@ def GradCalc(Tau, Phi, CurrentStudents):
             error_message += "Potential infinite loop stopped.\nBug report has been sent for inspection. Status can be found here:\nhttps://bit.ly/3qOu0mn\n\n"
             infinite_loop=True
             Ftput = False
-          else:Ftput = FunnelSorter(Calc, Section, TauPerc)
+          else:
+            if(TauPerc[1]<TauPerc[2]):
+              TauPerc[1], TauPerc[2]=TauPerc[2], TauPerc[1]
+            if(TauPerc[2]>(Var[1]/Var[3])):Tauness="Low"
+            elif((Var[1]/Var[3])>TauPerc[1]):Tauness="High"
+            else:Tauness=True
+            Ftput = FunnelSorter(Calc, Section, Tauness, TauPerc)
         else:
           for i in range(3):
             Equations_of_Doom.update_cell(Section, 4 + i,Var[i])  #inputting to sheet
