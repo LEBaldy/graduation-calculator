@@ -1,9 +1,6 @@
-import sys
 import math
-from pathlib import Path
-sys.path.insert(0,str(Path().resolve())+'/packages')
-from packages.gspread import authorize
-from packages.oauth2client.service_account import ServiceAccountCredentials
+from gspread import authorize
+from oauth2client.service_account import ServiceAccountCredentials
 import time
 from datetime import datetime
 
