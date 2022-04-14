@@ -161,6 +161,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
       for i in range(len(sigma_skips)):
         if(sigma_skips[i]==(FtOutput/200-5)):
           FtOutput+=200
+          break
     R9 = R9Boost(FtOutput / 200 - 5)
 
     #Outputting the F(t) for grad and R9 Boost
