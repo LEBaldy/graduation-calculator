@@ -26,7 +26,7 @@ while type(CurrentStudents)==str:
 print("\n")
 
 #Additional Variable Setup
-Var, FinalOutput, Ft, GradSection, UpperLimits, sigma_skips, infinite_loop, error_message, Finalput= [CurrentStudents, Tau, Phi, Phi + Tau, CurrentStudents * 200 + 1000], "N/A", "N/A", "N/A", "N/A", [144,146,149,152,155,158,161,164,166,168,172,176,180,184,188,190,193,198,203,208,213,216,218,220,224,230,236,240,242,246,248,251,254,256,261,268,275,279,282,286,289,292,296,298,304,312,316,320,324,326,328,334,336,344], False, "", ""
+Var, FinalOutput, Ft, GradSection, UpperLimits, infinite_loop, error_message, Finalput= [CurrentStudents, Tau, Phi, Phi + Tau, CurrentStudents * 200 + 1000], "N/A", "N/A", "N/A", "N/A", False, "", ""
 FtBounds = {
   #Format → (>sigma, (>Ft, <Ft), <sigma)
   #Pre-Theory
@@ -155,10 +155,17 @@ def GradCalc(Tau, Phi, CurrentStudents):
         FtOutput=GradFt
     
     if (FtOutput/200-5)==(Var[0]+1) and Var[0] > 142:
-      for i in range(len(sigma_skips)):
-        if(sigma_skips[i]==(FtOutput/200-5)):
-          FtOutput+=200
-          break
+      from sigma import sigma
+      from sigma import sigmainputs
+      inputs=sigmainputs()
+      curr = sigma(Var[0], FtOutput, inputs)
+      last = sigma(Var[0]-1, FtOutput-200, inputs)
+      if curr['cnt'] == last['cnt']:FtOutput+=200
+      else:
+        lastdiff = last['Sum'] - sigma(Var[0]-2, FtOutput-400, inputs)['Sum']
+        currdiff = curr['Sum'] - last['Sum']
+        nextdiff = sigma(Var[0]+1, FtOutput+200, inputs)['Sum'] - curr['Sum']
+        if currdiff / max(nextdiff, lastdiff) > 1.48:FtOutput+=200
     R9 = R9Boost(FtOutput / 200 - 5)
 
     #Outputting the F(t) for grad and R9 Boost
