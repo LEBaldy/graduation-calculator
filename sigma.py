@@ -1,5 +1,6 @@
 import math
 def sigmainputs():
+  print("You are at 1dσ. For Bigma/Skipma Detection, please input information below.")
   while type(tin)==str:
     tin=input("What is your current t? (x.xxe+X)\n")
     try:
@@ -28,13 +29,13 @@ def sigmainputs():
       adbool=float(adbool)
     except:
       print("\nPlease type in True or False.")
+  print("\n")
   return (tin, starsin, accelin, adbool)
 
 def sigma(sigma, ft, otherinputs):
   t, stars, acceleration, ad = otherinputs
   if acceleration==2.85:acceleration=2.85380860601
   adbonus= 1.5 if ad else 1
-  log10dmu=ft
   log10db= ft * 0.8 + math.log10(4e6)
   log10dpsi= (ft / 25 - 1) * math.log10(2)
   dtSpeed = (ft / (15.0*math.log10(2)) + 0.1) / 10
@@ -45,12 +46,11 @@ def sigma(sigma, ft, otherinputs):
     0.7 * math.log10(1+t),
     math.log10(1+stars),
     log10db / (10 * (log10db**0.5)),
-    log10dmu / 1300.00,
+    ft / 1300.00,
     log10dpsi / 225 * log10dpsi**0.5,
   ]
   levels, maxLevels=[0,0,0,0,0,0,0], [99,99,99,8,8,8,6]
   sigma, curSum, history, REFUND_CNT=sigma-55, 0, [], 5
-
 
   def researchCost(num):return num//2 + 1
   def getCost(num):
