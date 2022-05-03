@@ -1,32 +1,36 @@
 import math
 def sigmainputs():
-  print("You are at 1dσ. For Bigma/Skipma Detection, please input information below.")
+  print("You are at 1dσ. For Bigma/Skipma detection, please input information below.")
+  tin, starsin, accelin, adbool="","","",""
   while type(tin)==str:
     tin=input("What is your current t? (x.xxe+X)\n")
     try:
-      if tin>0:tin=float(tin)
+      tin=float(tin)
+      if tin>0:break
       else:print("\nPlease input your current t.")
     except:
       print("\nPlease input your current t.")
   while type(starsin)==str:
     starsin=input("What is your current stars? (x.xxe+X)\n")
     try:
-      if tin>0:starsin=int(starsin)
+      starsin=int(starsin)
+      if starsin>0:break
       else:print("\nPlease input your current stars.")
     except:
       print("\nPlease input your current stars.")
   while type(accelin)==str:
     accelin=input("What is your current accel? (2.85x if unknown)\n")
     try:
-      if accelin <1 or accelin >= 3.18:print("\nPlease input your current accel.")
-      else: accelin=float(accelin)
+      accelin=float(accelin)
+      if accelin <1 or accelin >= 3.18:
+        print("\nPlease input your current accel.")
     except:
       print("\nPlease input your current accel.")
-  while type(adbool)==bool:
+  while type(adbool)==str:
     adbool=input("Are you using ad bonus? (True or False)\n")
     try:
       if adbool=="false" or adbool=="true":adbool.capitalize()
-      adbool=float(adbool)
+      adbool=bool(adbool)
     except:
       print("\nPlease type in True or False.")
   print("\n")
@@ -50,7 +54,8 @@ def sigma(sigma, ft, otherinputs):
     log10dpsi / 225 * log10dpsi**0.5,
   ]
   levels, maxLevels=[0,0,0,0,0,0,0], [99,99,99,8,8,8,6]
-  sigma, curSum, history, REFUND_CNT=sigma-55, 0, [], 5
+  sigma, curSum, history, REFUND_CNT=sigma-55, 0, [], 10
+
 
   def researchCost(num):return num//2 + 1
   def getCost(num):
@@ -66,16 +71,13 @@ def sigma(sigma, ft, otherinputs):
     cand, cval=None, 0
     for i in range(7):
       if levels[i] >= maxLevels[i]: continue
-      cost=2 if i==6 else researchCost(levels[i])
-      curval=curSum/20 if i==6 else vals[i]/cost
+      (cost, curval)=(2,curSum/20) if i==6 else (researchCost(levels[i]),vals[i]/cost)
       if curval > cval:
-        cand=i if cost <= sigma else None
-        cval = curval
+        cand, cval=i if cost <= sigma else None, curval
     
     if cand == None:break
     history.append(cand)
-    if cand==6:
-      sigma-=2
+    if cand==6: sigma-=2
     else:
       curSum+= vals[cand]
       sigma-= researchCost(levels[cand])
@@ -85,15 +87,13 @@ def sigma(sigma, ft, otherinputs):
     if len(history)==0:break
     lastbest = history.pop()
     levels[lastbest]-=1
-    if lastbest ==6:
-      sigma+=2
+    if lastbest==6: sigma+=2
     else:
       sigma+=researchCost(levels[lastbest])
       curSum -= vals[lastbest]
   
   def search(i, sigma, curSum):
-    if i>=3:
-      return {'cnt': [6,8,8,8], 'Sum': curSum * 1.6}
+    if i>=3: return {'cnt': [6,8,8,8], 'Sum': curSum * 1.6}
     maxres=None
     for j in range(levels[i], maxLevels[i]+1):
       res=search(i+1, sigma, curSum)
