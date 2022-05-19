@@ -116,7 +116,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
     elif (Var[2] > 0):  #Using Students Check
       if (Var[2] < 93):  #5k Check
         if (Var[2] > 26): Section = 12  #5 student Check
-        else:Section = "Phi too low for next graduation.\nPlease use !sigma or the superior !simga."
+        else:Section = "Phi too low for next graduation.\nPlease use the student calculator: https://conicgames.github.io/exponentialidle/students.html"
       else:Section = "Upon reaching ee5k please respec all into Theory 1.\nIf you have no theories please input 0 for tau."
     else:Section = "Are You Even Using Students?"
     
