@@ -1,6 +1,9 @@
+import sys
 import math
-from gspread import authorize
-from oauth2client.service_account import ServiceAccountCredentials
+from pathlib import Path
+sys.path.insert(0,str(Path().resolve())+'/packages')
+from packages.gspread import authorize
+from packages.oauth2client.service_account import ServiceAccountCredentials
 import time
 from datetime import datetime
 
@@ -48,7 +51,7 @@ FtBounds = {
   #Psi3 (190-230 skipped for R9 and T9)
   (40, (9100, 9500), 40): 9600,
   (0, (10700, 11300), 52): 11200,
-  (0, (1230, 12900), 60): 12800,
+  (0, (12300, 12900), 60): 12800,
   (0, (20600, 21900), 104): 21800,
   (0, (22350, 23700), 114): 23600,
   (0, (24000, 25300), 122): 25200,
@@ -150,6 +153,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
     else:
       for (sigmalb, (Ftlb, Ftub), sigmaub), Ftout in FtBounds.items():
         if sigmaub > Var[0] > sigmalb and Ftub > GradFt > Ftlb: 
+          print(sigmalb, Ftlb, Ftub, sigmaub, GradFt, Var[0])
           FtOutput=Ftout
           break
         FtOutput=GradFt
@@ -215,6 +219,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
         else:Tauness=True
         Ftput = FunnelSorter(Calc, Section, Tauness, TauPerc)
     else:
+      if(Section==12):Equations_of_Doom.update_cell(Section, 4,Var[0])
       time_start, time_current = time.time(), 0
       while (Calc == False and attempts <50 and time_current <=120):
         #check every x seconds to see if calculator finished as to not to lag out the api
@@ -222,6 +227,7 @@ def GradCalc(Tau, Phi, CurrentStudents):
         try:
           Calc = float(Equations_of_Doom.cell(col=8, row=Section).value) #grabbing numbers
           Equations_of_Doom.update_cell(Section,7,"awaiting input") #resetting input 
+          if(Section==12):Equations_of_Doom.update_cell(Section, 4, "awaiting input")
           break
         except: 
           continue
