@@ -54,7 +54,7 @@ def sigma(sigma, ft, otherinputs):
     log10dpsi / 225 * log10dpsi**0.5,
   ]
   levels, maxLevels=[0,0,0,0,0,0,0], [999,999,999,8,8,8,6]
-  curSum, history, MAX_DFS_SIZE=0, [], 1000000
+  curSum, history, MAX_DFS_SIZE=0, [], 5000
 
   def researchCost(num):return num//2 + 1
   def getCost(num):
