@@ -53,9 +53,8 @@ def sigma(sigma, ft, otherinputs):
     ft / 1300.00,
     log10dpsi / 225 * log10dpsi**0.5,
   ]
-  levels, maxLevels=[0,0,0,0,0,0,0], [99,99,99,8,8,8,6]
-  sigma, curSum, history, REFUND_CNT=sigma-55, 0, [], 10
-
+  levels, maxLevels=[0,0,0,0,0,0,0], [999,999,999,8,8,8,6]
+  curSum, history, MAX_DFS_SIZE=0, [], 1000000
 
   def researchCost(num):return num//2 + 1
   def getCost(num):
@@ -66,12 +65,29 @@ def sigma(sigma, ft, otherinputs):
     return 2*order[6]+sum([getCost(order[i]) for i in range(len(order)-1)])
   def getTotalBoost(order):
     return (1 + order[6]*vals[6])*sum([order[i]*vals[i] for i in range(len(order)-1)])
+  def maxPurchaseCount(curLevel, sigma):
+    if researchCost(curLevel)>sigma: return 0
+    levels=0
+    if curLevel%2==1:
+      sigma-=researchCost(curLevel)
+      curLevel+=1
+      levels+=1
+    curLevel+=1
+    bulks = ((curLevel**2+4*sigma)**0.5 - curLevel)//2
+    sigma-=bulks*(curLevel+bulks)
+    curLevel+=2*bulks-1
+    levels+=2*bulks
+    if researchCost(curLevel)<=sigma:levels+=1
+    return levels
 
   while True:
     cand, cval=None, 0
     for i in range(7):
       if levels[i] >= maxLevels[i]: continue
-      (cost, curval)=(2,curSum/20) if i==6 else (researchCost(levels[i]),vals[i]/cost)
+      if i==6:cost, curval=2,curSum/20
+      else:
+        cost= researchCost(levels[i])
+        curval=vals[i]/cost
       if curval > cval:
         cand, cval=i if cost <= sigma else None, curval
     
@@ -83,27 +99,39 @@ def sigma(sigma, ft, otherinputs):
       sigma-= researchCost(levels[cand])
     levels[cand]+=1
   
-  for i in range(REFUND_CNT):
-    if len(history)==0:break
-    lastbest = history.pop()
+  while len(history)>0:
+    pool, dims=1,0
+
+    for i in range(7):
+      if levels[i]>=maxLevels[i]:continue
+      more=sigma//2 if i==6 else maxPurchaseCount(levels[i],sigma)
+      pool*=min(more, maxLevels[i]-levels[i])+1
+      dims+=1
+    
+    heur = pool/3 if dims<6 else pool/(20 if dims==6 else 60)
+    if heur>MAX_DFS_SIZE:break
+    
+    lastbest=history.pop()
     levels[lastbest]-=1
-    if lastbest==6: sigma+=2
+    if lastbest==6:
+      sigma+=2
     else:
       sigma+=researchCost(levels[lastbest])
-      curSum -= vals[lastbest]
+      curSum-=vals[lastbest]      
   
   def search(i, sigma, curSum):
-    if i>=3: return {'cnt': [6,8,8,8], 'Sum': curSum * 1.6}
+    if i==6:
+      cnt = min(levels[i] + sigma//2, 6)
+      return {'cnt': [cnt], 'Sum': curSum * (1 + cnt / 10)}
     maxres=None
     for j in range(levels[i], maxLevels[i]+1):
       res=search(i+1, sigma, curSum)
       if maxres==None or res['Sum'] >= maxres['Sum']:
         maxres = res
-        maxres['cnt'].append(j)
-
+        maxres['cnt'].insert(0,j)
+      
       sigma -= researchCost(j)
       if sigma < 0:break
       curSum +=vals[i]
     return maxres
-
   return search(0,sigma,curSum)
