@@ -128,10 +128,12 @@ def sigma(sigma, ft, otherinputs):
       res=search(i+1, sigma, curSum)
       if maxres==None or res['Sum'] >= maxres['Sum']:
         maxres = res
-        maxres['cnt'].insert(0,j)
+        maxres['cnt'].append(j)
       
       sigma -= researchCost(j)
       if sigma < 0:break
       curSum +=vals[i]
     return maxres
-  return search(0,sigma,curSum)
+  end=search(0,sigma,curSum)
+  end['cnt'].reverse()
+  return end
