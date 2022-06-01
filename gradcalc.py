@@ -12,17 +12,17 @@ from datetime import datetime
 Tau, Phi, CurrentStudents="hi", "hi", "hi"
 print("Input number after e only")
 while type(Tau)==str:
-  Tau=input("What is your current Tau?\n")
+  Tau=input("What is your current Tau(τ)?\n")
   try:Tau=float(Tau)
   except:
     print("\nPlease input your current Tau.")
 while type(Phi)==str:
-  Phi=input("What is your current Phi?\n")
+  Phi=input("What is your current Phi(φ)?\n")
   try:Phi=float(Phi)
   except:
     print("\nPlease input a number for Phi.")
 while type(CurrentStudents)==str:
-  CurrentStudents=input("How many students do you have currently?\n")
+  CurrentStudents=input("How many students(σ) do you have currently?\n")
   try:CurrentStudents=float(CurrentStudents)
   except:
     print("\nPlease input a number for students.")
