@@ -211,11 +211,8 @@ def main():
         time_current = time.time()-time_start 
         continue
 
-    print(calc)
-    print(tauPerc)
     return noInput() if calc==False else finalFt(calc)
       
-  #For Faster Calculations
   gradSection, upperLimits = gradSection(), [int(Equations_of_Doom.cell(col=4+i, row=141).value) for i in range(2)]
   if infinite_loop: finalOutput=""
   else:
@@ -225,7 +222,6 @@ def main():
     elif type(gradSection) == str: finalOutput = gradSection
     else:
       Ft = FtCalc(gradSection)
-      print(Ft)
       if type(Ft)==str: finalOutput=Ft
       elif Ft == False: finalOutput=""
       elif 2000>Ft[0] or Ft[0]>70000: exception = "Bounds"
