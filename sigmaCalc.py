@@ -1,29 +1,26 @@
 import math
-def sigmainputs():
+def sigmaInputs():
   print("You are at 1dσ. For Bigma/Skipma detection, please input information below.")
   tin, starsin, accelin, adbool="","","",""
   while type(tin)==str:
     tin=input("What is your current t? (x.xxe+X)\n")
     try:
-      tin=float(tin)
-      if tin>0:break
-      else:print("\nPlease input your current t.")
+      if float(tin) <= 0:print("\nPlease input your current t.")
+      else:tin=float(tin)
     except:
       print("\nPlease input your current t.")
   while type(starsin)==str:
     starsin=input("What is your current stars? (x.xxe+X)\n")
     try:
-      starsin=int(starsin)
-      if starsin>0:break
-      else:print("\nPlease input your current stars.")
+      if int(starsin) <= 0:print("\nPlease input your current stars.")
+      else:starsin=int(starsin)
     except:
-      print("\nPlease input your current stars.")
+      print("\nPlease input a number for stars.")
   while type(accelin)==str:
     accelin=input("What is your current accel? (2.85x if unknown)\n")
     try:
-      accelin=float(accelin)
-      if accelin <1 or accelin >= 3.18:
-        print("\nPlease input your current accel.")
+      if 3.18 > float(accelin) >= 1:accelin=float(accelin)
+      else:print("\nPlease input a valid accel.")
     except:
       print("\nPlease input your current accel.")
   while type(adbool)==str:
@@ -36,7 +33,7 @@ def sigmainputs():
   print("\n")
   return (tin, starsin, accelin, adbool)
 
-def sigma(sigma, ft, otherinputs):
+def sigmaCalc(sigma, ft, otherinputs):
   t, stars, acceleration, ad = otherinputs
   if acceleration==2.85:acceleration=2.85380860601
   adbonus= 1.5 if ad else 1
