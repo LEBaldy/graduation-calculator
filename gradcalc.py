@@ -144,9 +144,9 @@ def main():
       from sigmaCalc import sigmaInputs
       inputs=sigmaInputs()
 
-      curr = sigmaCalc(sigma, gradFt, inputs)['cnt']
-      last = sigmaCalc(sigma-1, gradFt-200, inputs)['cnt']
-      if curr == last:gradFt+=200
+      curr = sigmaCalc(sigma, gradFt, inputs)
+      last = sigmaCalc(sigma-1, gradFt-200, inputs)
+      if curr['cnt'] == last['cnt']:gradFt+=200
       else:
         lastDiff = last['Sum'] - sigmaCalc(sigma-2, gradFt-400, inputs)['Sum']
         currDiff = curr['Sum'] - last['Sum']
