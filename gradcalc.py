@@ -1,7 +1,7 @@
 import sys
 import math
 from pathlib import Path
-sys.path.insert(0,str(Path().resolve())+'/packages')
+sys.path.insert(0, f'{str(Path().resolve())}/packages')
 from packages.gspread import authorize
 from packages.oauth2client.service_account import ServiceAccountCredentials
 import time
@@ -93,27 +93,27 @@ def main():
 
   def gradSection():
     if tau > 0:
-      if sigma > 19:
-        if phi_tau < 1461:
-            if sigma < 25 and phi_tau < 240: return 277
-            elif sigma < 35 and 575 > phi_tau > 230: return 303
-            elif sigma < 40 and 730 > phi_tau > 550: return 332
-            elif sigma < 45 and 855 > phi_tau > 715: return 355
-            elif sigma < 50 and 1015 > phi_tau > 845: return 379
-            elif phi_tau > 1000: return 404
-            else: return 45
-        else:
-          if sigma > 64:
-            if sigma > 232 and phi_tau > 6339: return 143
-            elif phi_tau < 6341: 
-              if sigma < 75 and phi_tau < 1765: return 435
-              elif sigma < 85 and 2110 > phi_tau > 1750: return 467
-              elif phi_tau > 2085: return 507
-              else: return 114
-            elif sigma < 233: return "phi*tau too low for student count."
-            else: return "Student Count too low for Phi*Tau. You should have 233 students or greater by now."
-          else: return "Student Count too low for Phi*Tau. You should have R9 at ee14,000 by now."
-      else: return "Upon reaching ee5k please put students into Theory 1.\nIf you have no theories please input less than 20 for students."
+      if sigma <= 19:
+        return "Upon reaching ee5k please put students into Theory 1.\nIf you have no theories please input less than 20 for students."
+      if phi_tau < 1461:
+        if sigma < 25 and phi_tau < 240: return 277
+        elif sigma < 35 and 575 > phi_tau > 230: return 303
+        elif sigma < 40 and 730 > phi_tau > 550: return 332
+        elif sigma < 45 and 855 > phi_tau > 715: return 355
+        elif sigma < 50 and 1015 > phi_tau > 845: return 379
+        elif phi_tau > 1000: return 404
+        else: return 45
+      else:
+        if sigma <= 64:
+          return "Student Count too low for Phi*Tau. You should have R9 at ee14,000 by now."
+        if sigma > 232 and phi_tau > 6339: return 143
+        elif phi_tau < 6341: 
+          if sigma < 75 and phi_tau < 1765: return 435
+          elif sigma < 85 and 2110 > phi_tau > 1750: return 467
+          elif phi_tau > 2085: return 507
+          else: return 114
+        elif sigma < 233: return "phi*tau too low for student count."
+        else: return "Student Count too low for Phi*Tau. You should have 233 students or greater by now."
     elif phi < 93:
       if phi > 26: return 12
       else: return "Phi too low for next graduation.\nPlease use the student calculator: https://conicgames.github.io/exponentialidle/students.html"

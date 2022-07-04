@@ -26,7 +26,7 @@ def sigmaInputs():
   while type(adbool)==str:
     adbool=input("Are you using ad bonus? (True or False)\n")
     try:
-      if adbool=="false" or adbool=="true":adbool.capitalize()
+      if adbool in ("false", "true"):adbool.capitalize()
       adbool=bool(adbool)
     except:
       print("\nPlease type in True or False.")
@@ -59,9 +59,9 @@ def sigmaCalc(sigma, ft, otherinputs):
       return (num**2 - 1) / 4 + (num + 1) / 2
     return (num**2 + 2 * num) / 4
   def getCostOrder(order):
-    return 2*order[6]+sum([getCost(order[i]) for i in range(len(order)-1)])
+    return 2*order[6]+sum(getCost(order[i]) for i in range(len(order)-1))
   def getTotalBoost(order):
-    return (1 + order[6]*vals[6])*sum([order[i]*vals[i] for i in range(len(order)-1)])
+    return (1 + order[6]*vals[6])*sum(order[i]*vals[i] for i in range(len(order)-1))
   def maxPurchaseCount(curLevel, sigma):
     if researchCost(curLevel)>sigma: return 0
     levels=0
@@ -123,7 +123,7 @@ def sigmaCalc(sigma, ft, otherinputs):
     maxres=None
     for j in range(levels[i], maxLevels[i]+1):
       res=search(i+1, sigma, curSum)
-      if maxres==None or res['Sum'] >= maxres['Sum']:
+      if maxres is None or res['Sum'] >= maxres['Sum']:
         maxres = res
         maxres['cnt'].append(j)
       
