@@ -1,6 +1,12 @@
+import sys
+print(sys.path)
+import subprocess
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'oauth2client.service_account'])
+
 from gspread import authorize
 from oauth2client.service_account import ServiceAccountCredentials
 import time
+import math
 from datetime import datetime
 
 tau, phi, sigma="hi", "hi", "hi"
@@ -29,8 +35,7 @@ while type(sigma)==str:
     print("\nPlease input a number for students.")
 print("\n")
 
-finalOutput, Ft, gradSection, upperLimits, error_message="N/A", "N/A", "N/A", "N/A", ""
-infinite_loop, tauPerc, tauness= False, False, False
+finalOutput, Ft, gradSection, upperLimits, error_message, infinite_loop, inputs="N/A", "N/A", "N/A", "N/A", "", False, [""]
 ftBounds = {
   #Format → (sigma lower, sigma upper, Ft lower, Ft upper): gradFt
   (0, 15, -math.inf, 4000): 4000,
@@ -89,27 +94,27 @@ def main():
 
   def gradSection():
     if tau > 0:
-      if sigma <= 19:
-        return "Upon reaching ee5k please put students into Theory 1.\nIf you have no theories please input less than 20 for students."
-      if phi_tau < 1461:
-        if sigma < 25 and phi_tau < 240: return 277
-        elif sigma < 35 and 575 > phi_tau > 230: return 303
-        elif sigma < 40 and 730 > phi_tau > 550: return 332
-        elif sigma < 45 and 855 > phi_tau > 715: return 355
-        elif sigma < 50 and 1015 > phi_tau > 845: return 379
-        elif phi_tau > 1000: return 404
-        else: return 45
-      else:
-        if sigma <= 64:
-          return "Student Count too low for Phi*Tau. You should have R9 at ee14,000 by now."
-        if sigma > 232 and phi_tau > 6339: return 143
-        elif phi_tau < 6341: 
-          if sigma < 75 and phi_tau < 1765: return 435
-          elif sigma < 85 and 2110 > phi_tau > 1750: return 467
-          elif phi_tau > 2085: return 507
-          else: return 114
-        elif sigma < 233: return "phi*tau too low for student count."
-        else: return "Student Count too low for Phi*Tau. You should have 233 students or greater by now."
+      if sigma > 19:
+        if phi_tau < 1461:
+            if sigma < 25 and phi_tau < 240: return 277
+            elif sigma < 35 and 575 > phi_tau > 230: return 303
+            elif sigma < 40 and 730 > phi_tau > 550: return 332
+            elif sigma < 45 and 855 > phi_tau > 715: return 355
+            elif sigma < 50 and 1015 > phi_tau > 845: return 379
+            elif phi_tau > 1000: return 404
+            else: return 45
+        else:
+          if sigma > 64:
+            if sigma > 232 and phi_tau > 6339: return 143
+            elif phi_tau < 6341: 
+              if sigma < 75 and phi_tau < 1765: return 435
+              elif sigma < 85 and 2110 > phi_tau > 1750: return 467
+              elif phi_tau > 2085: return 507
+              else: return 114
+            elif sigma < 233: return "phi*tau too low for student count."
+            else: return "Student Count too low for Phi*Tau. You should have 233 students or greater by now."
+          else: return "Student Count too low for Phi*Tau. You should have R9 at ee14,000 by now."
+      else: return "Upon reaching ee5k please put students into Theory 1.\nIf you have no theories please input less than 20 for students."
     elif phi < 93:
       if phi > 26: return 12
       else: return "Phi too low for next graduation.\nPlease use the student calculator: https://conicgames.github.io/exponentialidle/students.html"
@@ -121,14 +126,6 @@ def main():
       if sigma<20:
         return "Phi too low for next graduation.\nPlease use the student calculator: https://conicgames.github.io/exponentialidle/students.html"
       return "Phi*Tau too low for next graduation."
-    
-    global tauPerc
-    global tauness
-    if tauPerc[1] < tauPerc[2]:
-      tauPerc[1], tauPerc[2]=tauPerc[2], tauPerc[1]
-    if tauPerc[2] > tau / phi_tau:tauness="Low"
-    elif tau / phi_tau > tauPerc[1]:tauness="High"
-    else:tauness=True
 
     for (sigmalb, sigmaub, Ftlb, Ftub), Ftout in ftBounds.items():
       if sigmaub > sigma > sigmalb and Ftub > gradFt > Ftlb: 
@@ -138,6 +135,7 @@ def main():
     if (gradFt/200-5) == (sigma+1) and sigma > 142:
       from sigmaCalc import sigmaCalc
       from sigmaCalc import sigmaInputs
+      global inputs
       inputs=sigmaInputs()
 
       curr = sigmaCalc(sigma, gradFt, inputs)
@@ -161,8 +159,8 @@ def main():
     }
     for (gradlb, gradub, sigmalb, sigmaub), (boostDiff, preBoost, postBoost) in boost_dict.items():
       if gradub > gradStud >= gradlb and sigmaub > sigma >= sigmalb:
-        return (gradFt, round(boostDiff, 3), round(preBoost, 3), round(postBoost, 3), tauness, tauPerc)
-    return (gradFt, 0, 0, 0, tauness, tauPerc)
+        return (gradFt, round(boostDiff, 3), round(preBoost, 3), round(postBoost, 3))
+    return (gradFt, 0, 0, 0)
 
   def FtCalc(Section):
     def noInput():
@@ -170,7 +168,7 @@ def main():
       global infinite_loop
 
       def LoopTimeAlert(time, loops):
-        Error_Collection_Grad.append_row([f"Check loop timed out\nLoops: {loops} loops\nTime: {time}sec", sigma, tau, phi, "N/A", "N/A", "N/A", "N/A", datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
+        Error_Collection_Grad.append_row([f"Check loop timed out\nLoops: {loops} loops\nTime: {time}sec", sigma, tau, phi, str(inputs), "N/A", "N/A", "N/A", "N/A", datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
         try:Equations_of_Doom.update_cell(Section, 7, "awaiting input") 
         except:pass
 
@@ -183,10 +181,8 @@ def main():
       infinite_loop=True
       return False
 
-    global tauPerc
     Equations_of_Doom.update_cell(Section, 7, phi_tau)
-    if sigma >= 65:Equations_of_Doom.update_cell(624, 4, phi_tau)
-    elif Section == 12:Equations_of_Doom.update_cell(Section, 4, sigma)
+    if Section == 12:Equations_of_Doom.update_cell(Section, 4, sigma)
     
     time_start, time_current, calc, attempts = time.time(), 0, False, 0
     while calc == False and attempts < 50 and time_current <=120:
@@ -194,10 +190,7 @@ def main():
       time.sleep(0.5)
       try:
         calc = float(Equations_of_Doom.cell(col=8, row=Section).value)
-        if Section >= 65:
-          tauPerc = [float(Equations_of_Doom.cell(col=5+i, row=624).value) for i in range(3)]
-          Equations_of_Doom.update_cell(624, 4, "awaiting input")
-        elif Section == 12:Equations_of_Doom.update_cell(Section, 4, "awaiting input")
+        if Section == 12:Equations_of_Doom.update_cell(Section, 4, "awaiting input")
         Equations_of_Doom.update_cell(Section, 7, "awaiting input")
         
         attempts+=1
@@ -214,7 +207,7 @@ def main():
   else:
     if (phi_tau > upperLimits[0] or sigma > upperLimits[1]):
       finalOutput = f"Values too high and outside range of equations.\nIf you have data to add please fill out https://forms.gle/myog2rNgdmQJqPsP6"
-      finalOutput += "\nCurrent Max Supported phi*tau: e{upperLimits[0]}\nCurrent Max Supported Students: {upperLimits[1]}" 
+      finalOutput += f"\nCurrent Max Supported phi*tau: e{upperLimits[0]}\nCurrent Max Supported Students: {upperLimits[1]}" 
     elif type(gradSection) == str: finalOutput = gradSection
     else:
       Ft = FtCalc(gradSection)
@@ -225,24 +218,10 @@ def main():
       else:
         finalOutput = f"Current Graduation Mark: ee{Ft[0]}\nTheory Income Boosted by {Ft[1]}x since last Graduation."
         finalOutput += f"\nTheory Income Before Graduation: {Ft[2]}\nTheory Income After Graduation: {Ft[3]}"
-        if Ft[4]=="High":
-          finalOutput += "\n\nTau is high compared to Phi.\nTau Range for Phi*Tau input:"
-          finalOutput += f"{round(10**(Ft[5][2]*phi_tau-math.floor(Ft[5][2]*phi_tau)),2)}e{math.floor(Ft[5][2]*phi_tau)}"
-          finalOutput += f" - {round(10**(Ft[5][1]*phi_tau-math.floor(Ft[5][1]*phi_tau)),2)}e{math.floor(Ft[5][1]*phi_tau)}"
-          finalOutput += "\n\nTry to R9 seap better or begin R9 seaping.\nFor more information, check out how to R9 seap:"
-          finalOutput += "\nhttps://exponential-idle-guides.netlify.app/guides/endgame/#push-ft-with-3r9-seapping"
-        elif Ft[4]=="Low":
-          finalOutput += "\n\nTau is low compared to Phi.\nTau Range for Phi*Tau input:"
-          finalOutput += f"{round(10**(Ft[5][2]*phi_tau-math.floor(Ft[5][2]*phi_tau)),2)}e{math.floor(Ft[5][2]*phi_tau)}"
-          finalOutput += f" - {round(10**(Ft[5][1]*phi_tau-math.floor(Ft[5][1]*phi_tau)),2)}e{math.floor(Ft[5][1]*phi_tau)}"
-          finalOutput += "\n\nTry pushing theories more efficiently by using the theory simulator and corresponding guide:"
-          finalOutput += "\nhttps://exponential-idle-guides.netlify.app/guides/theory-sim/"
-          finalOutput += "\nAlso check out how to R9 seap:\nhttps://exponential-idle-guides.netlify.app/guides/endgame/#push-ft-with-3r9-seapping"
-        elif Ft[4] != True: finalOutput, exception=None, "R9seaper"
 
   if(type(finalOutput)==None):
-    Error_Collection_Grad.append_row([exception, sigma, tau, phi, "N/A", str(Ft), gradSection, str(upperLimits), datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
-    return error_message+"An error occured.\nBug report has been sent for inspection."
+    Error_Collection_Grad.append_row([exception, sigma, tau, phi, str(inputs), "N/A", str(Ft), gradSection, str(upperLimits), datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
+    return error_message+"An error occured.\nBug report has been sent for inspection.\nContact LE⭐Baldy#2002 or Ayo#8519 on discord or u/LEBAldy2002 on Reddit if this is not resolved quickly."
   else:return error_message+finalOutput
   
 try:
@@ -250,5 +229,5 @@ try:
   print(Gradput+"\n")
   Data_Collection_Grad.append_row([sigma, tau, phi, Gradput, datetime.now().strftime('%Y/%m/%d %H:%M:%S')])
 except Exception as err:
-  Error_Collection_Grad.append_row([str(err), sigma, tau, phi, "N/A", str(Ft), gradSection, str(upperLimits), datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
-  print("An error occured.\nBug report has been sent for inspection.")
+  Error_Collection_Grad.append_row([str(err), sigma, tau, phi, str(inputs), "N/A", str(Ft), gradSection, str(upperLimits), datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
+  print("An error occured.\nBug report has been sent for inspection.\nContact LE⭐Baldy#2002 or Ayo#8519 on discord or u/LEBAldy2002 on Reddit if this is not resolved quickly.")
