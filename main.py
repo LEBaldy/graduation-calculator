@@ -1,24 +1,22 @@
 import sys
-print(sys.path)
-import subprocess
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'oauth2client.service_account'])
-
-from gspread import authorize
-from oauth2client.service_account import ServiceAccountCredentials
-import time
 import math
+from pathlib import Path
+sys.path.insert(0,f'{str(Path().resolve())}/packages')
+from packages.gspread import authorize
+from packages.oauth2client.service_account import ServiceAccountCredentials
+import time
 from datetime import datetime
 
 tau, phi, sigma="hi", "hi", "hi"
 print("Input number after e only")
-while type(tau)==str:
+while isinstance(tau, str):
   tau=input("What is your current Tau(τ)?\n")
   try:
     if float(tau) < 0: print("\nPlease input a valid current Tau.")
     else:tau=float(tau)
   except:
     print("\nPlease input a number for Tau.")
-while type(phi)==str:
+while isinstance(phi, str):
   phi=input("What is your current Phi(φ)?\n")
   try:
     if float(phi) < 0: print("\nPlease input a valid current Phi.")
@@ -26,7 +24,7 @@ while type(phi)==str:
     else:phi=float(phi)
   except:
     print("\nPlease input a number for Phi.")
-while type(sigma)==str:
+while isinstance(sigma, str):
   sigma=input("How many students(σ) do you have currently?\n")
   try:
     if float(sigma) < 5:print("\nPlease input a valid student count.")
@@ -42,7 +40,7 @@ ftBounds = {
   (14, math.inf, -math.inf, 4800): 4800,
   (16, 18, -math.inf, math.inf): 4800,
   (17, 20, -math.inf, math.inf): 5000,
-  (20, 22, -math.inf, math.inf): 5200,
+  (20, 20, -math.inf, math.inf): 5200,
   (0, 25, 5899, math.inf): 6000,
   (25, 25, -math.inf, 7600): 7600,
   (30, 30, math.inf, 8200): 8000,
@@ -111,8 +109,8 @@ def main():
               elif sigma < 85 and 2110 > phi_tau > 1750: return 467
               elif phi_tau > 2085: return 507
               else: return 114
-            elif sigma < 233: return "phi*tau too low for student count."
-            else: return "Student Count too low for Phi*Tau. You should have 233 students or greater by now."
+            elif sigma < 233: return "Student Count too low for Phi*Tau. You should have 233 students or greater by now."
+            else: return "Phi*Tau too low for student count."
           else: return "Student Count too low for Phi*Tau. You should have R9 at ee14,000 by now."
       else: return "Upon reaching ee5k please put students into Theory 1.\nIf you have no theories please input less than 20 for students."
     elif phi < 93:
@@ -152,10 +150,10 @@ def main():
       #Format → (grad lower, grad upper, sigma lower, sigma upper): (boostDiff, preBoost, postBoost)
       (-math.inf, 75, 65, 75): (gradStud / sigma, sigma / 20, gradStud / 20),
       (75, 85, 65, 75): (gradStud**2 / (sigma * 20), sigma / 20, (gradStud / 20)**2),
-      (-math.inf, 75, 65, 75): (gradStud**3 / (sigma * 400), sigma / 20, (gradStud / 20)**3),
-      (-math.inf, 75, 65, 75): (gradStud**2 / sigma**2, (sigma / 20)**2, (gradStud / 20)**2),
-      (-math.inf, 75, 65, 75): (gradStud**3 / (20 * sigma**2), (sigma / 20)**2,(gradStud / 20)**3),
-      (-math.inf, 75, 65, 75): (gradStud**3 / sigma**3, (sigma / 20)**3, (gradStud / 20)**3)
+      (85, math.inf, 65, 75): (gradStud**3 / (sigma * 400), sigma / 20, (gradStud / 20)**3),
+      (75, 85, 75, 85): (gradStud**2 / sigma**2, (sigma / 20)**2, (gradStud / 20)**2),
+      (85, math.inf, 75, 85): (gradStud**3 / (20 * sigma**2), (sigma / 20)**2, (gradStud / 20)**3),
+      (85, math.inf, 85, math.inf): (gradStud**3 / sigma**3, (sigma / 20)**3, (gradStud / 20)**3)
     }
     for (gradlb, gradub, sigmalb, sigmaub), (boostDiff, preBoost, postBoost) in boost_dict.items():
       if gradub > gradStud >= gradlb and sigmaub > sigma >= sigmalb:
@@ -168,7 +166,7 @@ def main():
       global infinite_loop
 
       def LoopTimeAlert(time, loops):
-        Error_Collection_Grad.append_row([f"Check loop timed out\nLoops: {loops} loops\nTime: {time}sec", sigma, tau, phi, str(inputs), "N/A", "N/A", "N/A", "N/A", datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
+        Error_Collection_Grad.append_row([f"Check loop timed out\nLoops: {loops} loops\nTime: {time}sec", sigma, tau, phi, str(inputs), "N/A", "N/A", "N/A", "N/A", datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False, 'Normal'])
         try:Equations_of_Doom.update_cell(Section, 7, "awaiting input") 
         except:pass
 
@@ -208,26 +206,34 @@ def main():
     if (phi_tau > upperLimits[0] or sigma > upperLimits[1]):
       finalOutput = f"Values too high and outside range of equations.\nIf you have data to add please fill out https://forms.gle/myog2rNgdmQJqPsP6"
       finalOutput += f"\nCurrent Max Supported phi*tau: e{upperLimits[0]}\nCurrent Max Supported Students: {upperLimits[1]}" 
-    elif type(gradSection) == str: finalOutput = gradSection
+    elif isinstance(gradSection, str): finalOutput = gradSection
     else:
       Ft = FtCalc(gradSection)
-      if type(Ft)==str: finalOutput=Ft
+      if isinstance(Ft, str): finalOutput=Ft
       elif Ft == False: finalOutput=""
       elif 2000>Ft[0] or Ft[0]>70000: exception = "Bounds"
-      elif Ft[1]==Ft[2]==Ft[3]==0: finalOutput = f"Current Graduatin Mark: ee{Ft[0]}"
+      elif Ft[1]==Ft[2]==Ft[3]==0: finalOutput = f"Current Graduation Mark: ee{Ft[0]}"
       else:
         finalOutput = f"Current Graduation Mark: ee{Ft[0]}\nTheory Income Boosted by {Ft[1]}x since last Graduation."
         finalOutput += f"\nTheory Income Before Graduation: {Ft[2]}\nTheory Income After Graduation: {Ft[3]}"
 
-  if(type(finalOutput)==None):
-    Error_Collection_Grad.append_row([exception, sigma, tau, phi, str(inputs), "N/A", str(Ft), gradSection, str(upperLimits), datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
+  if finalOutput is None:
+    Error_Collection_Grad.append_row([exception, sigma, tau, phi, f'{inputs}', "N/A", f'{Ft}', gradSection, f'{upperLimits}', datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False, 'Normal'])
     return error_message+"An error occured.\nBug report has been sent for inspection.\nContact LE⭐Baldy#2002 or Ayo#8519 on discord or u/LEBAldy2002 on Reddit if this is not resolved quickly."
   else:return error_message+finalOutput
-  
+
 try:
   Gradput=main()
   print(Gradput+"\n")
-  Data_Collection_Grad.append_row([sigma, tau, phi, Gradput, datetime.now().strftime('%Y/%m/%d %H:%M:%S')])
+  Data_Collection_Grad.append_row([sigma, tau, phi, Gradput, datetime.now().strftime('%Y/%m/%d %H:%M:%S'), f'{inputs}'])
+
 except Exception as err:
-  Error_Collection_Grad.append_row([str(err), sigma, tau, phi, str(inputs), "N/A", str(Ft), gradSection, str(upperLimits), datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False])
-  print("An error occured.\nBug report has been sent for inspection.\nContact LE⭐Baldy#2002 or Ayo#8519 on discord or u/LEBAldy2002 on Reddit if this is not resolved quickly.")
+  Error_Collection_Grad.append_row([f'{err}', sigma, tau, phi, f'{inputs}', "N/A", f'{Ft}', gradSection, f'{upperLimits}', datetime.now().strftime('%Y/%m/%d %H:%M:%S'), False, 'Normal', ''])
+  
+  print("An error occured.\nBug report will be sent for inspection.\nContact LE⭐Baldy#2002 or Ayo#8519 on discord or u/LEBAldy2002 on Reddit if this is not resolved quickly.")
+  con_det=input("If you would like to give contact information to you in the report, then give here ('None' for none).")
+  print('Sending error report...')
+  
+  if con_det not in ('None', 'none'): Error_Collection_Grad.update_cell(Error_Collection_Grad.row_count, 13, con_det)
+  if not err: print('Error not saved correctly. Please sent all inputs and/or a screenshot of the console to LE⭐Baldy#2002 or Ayo#8519 on discord or u/LEBAldy2002 on Reddit. Will not be solved otherwise.')
+  else: print('Error report sent.')
