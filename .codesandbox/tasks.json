@@ -3,5 +3,14 @@
   "setupTasks": [],
 
   // These tasks can be run from CodeSandbox. Running one will open a log in the app.
-  "tasks": {}
+  "tasks": {
+    "start": {
+      "name": "start",
+      "command": "python main.py",
+      "runAtStart": true,
+      "restartOn": {
+        "files": ["main.py"]
+      }
+    }
+  }
 }
