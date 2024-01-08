@@ -12,8 +12,8 @@ def sigmaInputs():
   while type(starsin)==str:
     starsin=input("What is your current stars? (x.xxe+X)\n")
     try:
-      if int(starsin) <= 0:print("\nPlease input your current stars.")
-      else:starsin=int(starsin)
+      if int(float(starsin)) <= 0:print("\nPlease input your current stars.")
+      else:starsin=int(float(starsin))
     except:
       print("\nPlease input a number for stars.")
   while type(accelin)==str:
@@ -31,9 +31,11 @@ def sigmaInputs():
     except:
       print("\nPlease type in True or False.")
   print("\n")
+  print(f'ignore (send if error report): {tin} - {starsin} - {accelin} - {adbool}')
   return (tin, starsin, accelin, adbool)
 
 def sigmaCalc(sigma, ft, otherinputs):
+  sigma-=55
   t, stars, acceleration, ad = otherinputs
   if acceleration==2.85:acceleration=2.85380860601
   adbonus= 1.5 if ad else 1
